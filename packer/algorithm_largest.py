@@ -10,6 +10,12 @@ class AlgorithmLargest(PackingAlgorithm):
 
         # locations
         self.loc = []
+        self.width = self.settings.params['output_size'][0]
+        self.height = self.settings.params['output_size'][1]
+        self.padding = self.settings.params['padding']
+        self.step = self.settings.params['step']
+
+
 
     def is_free(self, rect):
 
@@ -19,40 +25,45 @@ class AlgorithmLargest(PackingAlgorithm):
 
         return True
 
-    def next_image(self):
+    def pack(self):
+
+        errors = False
     
         for f in self.file_manager.files_sorted:
             img = Image.open(self.settings.params['input'] + f)
-            # print colours.OKBLUE + f + colours.ENDC
             
             s = img.size
-            step = 20
             j = 0
             i = 0
-            padding = 5
-
             added = False
 
-            while i < 1000:
+            while i < self.width:
                 if added: break
 
                 j = 0
 
-                while j < 1000:
+                while j < self.height:
                     if added: break
 
-                    p1 = Point(i + padding, j + padding)
-                    p2 = Point(i + s[0] + padding, j + s[1] + padding)
+                    p1 = Point(i + self.padding, j + self.padding)
+                    p2 = Point(i + s[0] + self.padding, j + s[1] + self.padding)
                     r1 = Rect(p1, p2)
 
-                    if self.is_free(r1) and p2.x < 1000 and p2.y < 1000:
+                    if self.is_free(r1) and p2.x < self.width and p2.y < self.height:
                         self.loc.append(r1)
                         self.output.paste(img, (p1.x, p1.y), None)
                         added = True
 
-                    j += step
+                    j += self.step
 
-                i += step
+                i += self.step
 
-            if i >= 1000 or j >= 1000:
-                print f + ' didnt fit.'
+            if i >= self.width or j >= self.height:
+                errors = True
+                print colours.FAIL + 'ERROR: file ' + f + " didn't fit." + colours.ENDC
+
+        if errors:
+            print colours.FAIL + 'Packing completed with some errors.' + colours.ENDC
+        else:
+            print colours.OKGREEN + 'Packing completed successfully!' + colours.ENDC
+

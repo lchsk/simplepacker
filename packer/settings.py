@@ -20,12 +20,17 @@ class Settings(object):
         # with parameters etc for the tile
         self.params['synchronise'] = False
 
+        self.params['step'] = 20
+
+        self.params['padding'] = 5
+
+
     def help(self):
         print 'Help...'
         sys.exit(0)
 
     def read_parameters(self):
-        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:s", ['help', 'input', 'output', 'width', 'height', 'synchronise'])
+        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:s:p:S:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step'])
 
         try:
             for opt, arg in opts:
@@ -41,6 +46,11 @@ class Settings(object):
                     self.params['output_size'][1] = int(arg)
                 elif opt in ('-s', '--synchronise'):
                     self.params['synchronise'] = True
+                elif opt in ('-p', '--padding'):
+                    self.params['padding'] = int(arg)
+                elif opt in ('-S', '--step'):
+                    self.params['step'] = int(arg)
+
                 else:
                     self.help()
             

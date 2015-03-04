@@ -12,5 +12,5 @@ if __name__ == '__main__':
 
     a = AlgorithmLargest(s, fm)
     a.prepare()
-    a.next_image()
+    a.pack()
     a.close()
