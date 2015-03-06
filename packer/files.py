@@ -1,6 +1,15 @@
 import os
 from PIL import Image
 import operator
+import json
+
+def save_output(filename, record):
+        
+        to_save = json.dumps(record)
+
+        f = open(filename + '.txt', 'w')
+        f.write(to_save)
+        f.close()
 
 class FileManager(object):
     def __init__(self, settings):
@@ -21,6 +30,7 @@ class FileManager(object):
 
     def sort_by_area(self):
         pass
+
 
     def _read_input(self):
         self.files = os.listdir(self.input)
