@@ -9,6 +9,7 @@ if __name__ == '__main__':
     s.print_parameters()
 
     fm = FileManager(s)
+    fm.synchronise_info_files()
 
     a = AlgorithmLargest(s, fm)
     a.prepare()

@@ -30,7 +30,7 @@ class Settings(object):
         sys.exit(0)
 
     def read_parameters(self):
-        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:s:p:S:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step'])
+        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:sp:S:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step'])
 
         try:
             for opt, arg in opts:

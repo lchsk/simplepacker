@@ -53,7 +53,12 @@ class AlgorithmLargest(PackingAlgorithm):
                         self.output.paste(img, (p1.x, p1.y), None)
 
                         filename, ext = utility.split_filename(f)
-                        data = {'x' : p1.x, 'y': p1.y, 'w': s[0], 'h': s[1], 'name': filename, 'ext': ext}
+                        info = self.file_manager.info.get(f, {})
+
+                        data = {'x' : p1.x, 'y': p1.y, 'w': s[0], 'h': s[1], 
+                                    'name': filename, 
+                                    'ext': ext, 
+                                    'params': info.params}
                         self.record[filename] = data
                         
                         added = True
@@ -64,5 +69,5 @@ class AlgorithmLargest(PackingAlgorithm):
 
             self.check_for_errors(f, i, j)
 
-       
+
 
