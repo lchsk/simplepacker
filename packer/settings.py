@@ -13,6 +13,9 @@ class Settings(object):
         # Output filename
         self.params['output'] = ''
 
+        # Path to the file (in info file)
+        self.internal_path = ''
+
         # Size of output image (width, height)
         self.params['output_size'] = [1024, 1024]
 
@@ -30,7 +33,7 @@ class Settings(object):
         sys.exit(0)
 
     def read_parameters(self):
-        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:sp:S:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step'])
+        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:sp:S:I:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step', 'internal_path'])
 
         try:
             for opt, arg in opts:
@@ -50,10 +53,12 @@ class Settings(object):
                     self.params['padding'] = int(arg)
                 elif opt in ('-S', '--step'):
                     self.params['step'] = int(arg)
+                elif opt in ('-I'):
+                    self.params['internal_path'] = arg
 
                 else:
                     self.help()
-            
+
         except getopt.GetoptError:
             self.help()
 

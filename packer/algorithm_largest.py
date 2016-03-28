@@ -28,10 +28,8 @@ class AlgorithmLargest(PackingAlgorithm):
     def pack(self):
 
         # errors = False
-    
         for f in self.file_manager.files_sorted:
             img = Image.open(self.settings.params['input'] + f)
-            
             s = img.size
             j = i = 0
             added = False
@@ -55,12 +53,11 @@ class AlgorithmLargest(PackingAlgorithm):
                         filename, ext = utility.split_filename(f)
                         info = self.file_manager.info.get(f, {})
 
-                        data = {'x' : p1.x, 'y': p1.y, 'w': s[0], 'h': s[1], 
-                                    'name': filename, 
-                                    'ext': ext, 
+                        data = {'x' : p1.x, 'y': p1.y, 'w': s[0], 'h': s[1],
+                                    'name': filename,
+                                    'ext': ext,
                                     'params': info.params}
                         self.record[filename] = data
-                        
                         added = True
 
                     j += self.step

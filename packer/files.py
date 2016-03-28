@@ -5,13 +5,28 @@ import json
 import utility
 import os.path
 
-def save_output(filename, record):
+def save_output(filename, record, internal_path):
     '''Saves record file to a file as a json'''
     to_save = json.dumps(record)
 
     f = open(filename + '.txt', 'w')
     f.write(to_save)
     f.close()
+
+    # css output
+    with open(filename + '.css', 'w') as f:
+        for file, data in sorted(record.iteritems()):
+            css = '''.{file} {{width: {w}px; height: {h}px; background: url({filename}) {y1}px {y2}px;}}'''.format(
+                file=file,
+                filename=internal_path + filename,
+                # l=data['x'],
+                # w=data['w'],
+                w=data['w'],
+                h=data['h'],
+                y1=-data['x'],
+                y2=-data['y'],
+            )
+            f.write('{line}\n'.format(line=css))
 
 class InfoFile(object):
     def __init__(self, path):
@@ -67,7 +82,7 @@ class FileManager(object):
 
             for f in files:
                 if utility.is_image(self.input + f):
-                    h = open(self.input + f + '.txt', 'a')
+                    h = open(self.input + f + '.json', 'a')
                     h.close()
 
     def _read_input(self):

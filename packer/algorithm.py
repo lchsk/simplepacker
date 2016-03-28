@@ -27,6 +27,10 @@ class PackingAlgorithm(object):
     def close(self):
         self.output.save(self.settings.params['output'])
         self.print_output()
-        files.save_output(self.settings.params['output'], self.record)
+        files.save_output(
+            self.settings.params['output'],
+            self.record,
+            self.settings.params['internal_path']
+        )
 
         print colours.OKBLUE + 'Output should be available in ' + self.settings.params['output'] + ' and ' + self.settings.params['output']  + '.txt' + colours.ENDC
