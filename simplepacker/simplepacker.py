@@ -1,7 +1,7 @@
-from packer.settings import Settings
-from packer.files import FileManager
+from settings import Settings
+from files import FileManager
 
-from packer.algorithm_largest import AlgorithmLargest
+from algorithm_largest import AlgorithmLargest
 
 if __name__ == '__main__':
     s = Settings()

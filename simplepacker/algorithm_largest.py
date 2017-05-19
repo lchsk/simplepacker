@@ -1,7 +1,7 @@
 from algorithm import PackingAlgorithm
 from PIL import Image
-from packer.geometry import Point, Rect, overlap
-from packer.colours import colours
+from geometry import Point, Rect, overlap
+from colours import colours
 import utility
 import json
 

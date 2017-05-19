@@ -29,7 +29,7 @@ class Settings(object):
 
 
     def help(self):
-        print 'Help...'
+        print('Help...')
         sys.exit(0)
 
     def read_parameters(self):
@@ -63,6 +63,6 @@ class Settings(object):
             self.help()
 
     def print_parameters(self):
-        print 'Parameters:'
-        for k, v in self.params.iteritems():
-            print '\t' + k + ': ' + str(v)
+        print('Parameters:')
+        for k, v in self.params.items():
+            print('\t' + k + ': ' + str(v))

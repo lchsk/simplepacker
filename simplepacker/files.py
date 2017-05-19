@@ -15,7 +15,7 @@ def save_output(filename, record, internal_path):
 
     # css output
     with open(filename + '.css', 'w') as f:
-        for file, data in sorted(record.iteritems()):
+        for file, data in sorted(record.items()):
             css = '''.{file} {{width: {w}px; height: {h}px; background: url({filename}) {y1}px {y2}px;}}'''.format(
                 file=file,
                 filename=internal_path + filename,
@@ -94,8 +94,8 @@ class FileManager(object):
                 self.info[f] = InfoFile(self.input + f + '.txt')
                 s = im.size
                 area = s[0] * s[1]
-            except Exception,e:
-                print str(e)
+            except Exception as e:
+                print(str(e))
                 continue
 
             # list: image area, width, height
