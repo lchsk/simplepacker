@@ -1,17 +1,13 @@
-from settings import Settings
+from settings import read_args
 from files import FileManager
 
 from algorithm_largest import AlgorithmLargest
 
 if __name__ == '__main__':
-    s = Settings()
-    s.read_parameters()
-    s.print_parameters()
+    args = read_args()
 
-    fm = FileManager(s)
+    fm = FileManager(args)
     fm.synchronise_info_files()
 
-    a = AlgorithmLargest(s, fm)
-    a.prepare()
-    a.pack()
-    a.close()
+    a = AlgorithmLargest(args, fm)
+    a.run()
