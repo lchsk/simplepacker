@@ -1,7 +1,6 @@
 from PIL import Image
-from utility import Color
-import files
-from utility import Logger, Color
+from simplepacker import files
+from simplepacker.utility import Logger, Color
 
 logger = Logger(__name__)
 
