@@ -1,9 +1,9 @@
 import os
-from PIL import Image
-import operator
 import json
-import utility
-import os.path
+import operator
+
+from PIL import Image
+
 
 def save_output(filename, record, internal_path):
     '''Saves record file to a file as a json'''
@@ -28,6 +28,7 @@ def save_output(filename, record, internal_path):
             )
             f.write('{line}\n'.format(line=css))
 
+
 class InfoFile(object):
     def __init__(self, path):
 
@@ -49,56 +50,79 @@ class InfoFile(object):
             # no need to output this to the user
             pass
 
-class FileManager(object):
-    def __init__(self, settings):
 
-        self.settings = settings
-        self.input = self.settings.params['input']
+class FileManager(object):
+    def __init__(self, args):
+        self._args = args
+        self._input = args.input
 
         # just a list of filename
-        self.files = []
+        self._files = []
 
         # dictionary: name => size
-        self.file_sizes = {}
+        self._file_sizes = {}
 
         # name => InfoFile
-        self.info = {}
+        self._info = {}
 
         # list of filenames sorted (desc)
-        self.files_sorted = []
+        self._files_sorted = []
 
         self._read_input()
 
-    def sort_by_area(self):
-        pass
+
+    @property
+    def files_sorted(self):
+        return self._files_sorted
+
+
+    @property
+    def info(self):
+        return self._info
+
 
     def synchronise_info_files(self):
         '''Creates text files in input folder. The name of each file is the same as 
         that of the image file, but with a txt extension. If file already exists
         it is left untouched.'''
         
-        if self.settings.params['synchronise']:
-            files = os.listdir(self.input)
+        # if self.settings.params['synchronise']:
+            # files = os.listdir(self._input)
 
-            for f in files:
-                if utility.is_image(self.input + f):
-                    h = open(self.input + f + '.json', 'a')
-                    h.close()
+            # for f in files:
+                # if utility.is_image(self.input + f):
+                    # h = open(self.input + f + '.json', 'a')
+                    # h.close()
+
 
     def _read_input(self):
-        self.files = os.listdir(self.input)
+        self._files = os.listdir(self._input)
         
-        for f in self.files:
+        for f in self._files:
+            image_path = os.path.join(self._input, f)
+
             try:
-                im = Image.open(self.input + f)
-                self.info[f] = InfoFile(self.input + f + '.txt')
-                s = im.size
-                area = s[0] * s[1]
-            except Exception as e:
-                print(str(e))
+                img = Image.open(image_path)
+            except FileNotFoundError:
+                print('Not found')
+                continue
+            except OSError:
+                print("e")
                 continue
 
-            # list: image area, width, height
-            self.file_sizes[f] = [area, s[0], s[1]]
+            self._info[f] = InfoFile(image_path + '.txt')
 
-        self.files_sorted = [name for name, _ in sorted(self.file_sizes.items(), key=operator.itemgetter(1), reverse=True)]
+            width, height = img.size
+            area = width * height
+
+            self._file_sizes[f] = (area, width, height)
+            self._sort_by_area()
+
+
+    def _sort_by_area(self):
+        self._files_sorted = (
+            name
+            for name, _ in sorted(
+                self._file_sizes.items(), key=operator.itemgetter(1),
+                reverse=True,
+            ))
