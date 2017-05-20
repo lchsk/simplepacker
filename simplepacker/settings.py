@@ -1,68 +1,65 @@
-import sys
-import getopt
+import argparse
 
-class Settings(object):
-    def __init__(self):
+from utility import Logger
 
-        # parameters dictionary
-        self.params = {}
+logger = Logger(__name__)
 
-        # Path to the input folder
-        self.params['input'] = ''
+def read_args():
+    parser = argparse.ArgumentParser(description='simplepacker')
 
-        # Output filename
-        self.params['output'] = ''
+    parser.add_argument(
+        '-i',
+        '--input',
+        type=str,
+        required=True,
+        help='Input directory',
+    )
 
-        # Path to the file (in info file)
-        self.internal_path = ''
+    parser.add_argument(
+        '-o',
+        '--output',
+        type=str,
+        default='default.png',
+        help='Output image filename',
+    )
 
-        # Size of output image (width, height)
-        self.params['output_size'] = [1024, 1024]
+    parser.add_argument(
+        '--width',
+        type=int,
+        default=1024,
+        help='Width of the output image',
+    )
 
-        # if set to true, each tile will be accompanied by a txt file
-        # with parameters etc for the tile
-        self.params['synchronise'] = False
+    parser.add_argument(
+        '--height',
+        type=int,
+        default=1024,
+        help='Height of the output image',
+    )
 
-        self.params['step'] = 20
+    parser.add_argument(
+        '-s',
+        '--step',
+        type=int,
+        default=20,
+        help='Step size',
+    )
 
-        self.params['padding'] = 5
+    parser.add_argument(
+        '-p',
+        '--padding',
+        type=int,
+        default=5,
+        help='Padding',
+    )
 
+    args = parser.parse_args()
 
-    def help(self):
-        print('Help...')
-        sys.exit(0)
+    log_args = ', '.join(
+        '{}={}'.format(param, value)
+        for param, value in vars(args).items()
+    )
 
-    def read_parameters(self):
-        opts, args = getopt.getopt(sys.argv[1:], "Hi:o:w:h:sp:S:I:", ['help', 'input', 'output', 'width', 'height', 'synchronise', 'padding', 'step', 'internal_path'])
+    logger.info('Parameters: ' + log_args)
 
-        try:
-            for opt, arg in opts:
-                if opt in ("-H", "--help"):
-                    self.help()
-                elif opt in ('-i', '--input'):
-                    self.params['input'] = arg
-                elif opt in ('-o', '--output'):
-                    self.params['output'] = arg
-                elif opt in ('-w', '--width'):
-                    self.params['output_size'][0] = int(arg)
-                elif opt in ('-h', '--height'):
-                    self.params['output_size'][1] = int(arg)
-                elif opt in ('-s', '--synchronise'):
-                    self.params['synchronise'] = True
-                elif opt in ('-p', '--padding'):
-                    self.params['padding'] = int(arg)
-                elif opt in ('-S', '--step'):
-                    self.params['step'] = int(arg)
-                elif opt in ('-I'):
-                    self.params['internal_path'] = arg
-
-                else:
-                    self.help()
-
-        except getopt.GetoptError:
-            self.help()
-
-    def print_parameters(self):
-        print('Parameters:')
-        for k, v in self.params.items():
-            print('\t' + k + ': ' + str(v))
+    return args
