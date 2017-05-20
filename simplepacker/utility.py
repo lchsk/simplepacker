@@ -5,9 +5,10 @@ from datetime import datetime
 
 from PIL import Image
 
+CURRENT_TIME = ('{d.year}_{d.month}_{d.day}_'
+               '{d.hour}_{d.minute}_{d.second}'.format(d=datetime.now()))
 
-log_filename = ('{d.year}_{d.month}_{d.day}_'
-               '{d.hour}_{d.minute}_{d.second}.log'.format(d=datetime.now()))
+log_filename = CURRENT_TIME + '.log'
 
 log_format = '%(levelname)s - %(name)s - %(message)s'
 formatter = logging.Formatter(log_format)

@@ -1,6 +1,6 @@
 import argparse
 
-from utility import Logger
+from utility import Logger, CURRENT_TIME
 
 logger = Logger(__name__)
 
@@ -19,7 +19,7 @@ def read_args():
         '-o',
         '--output',
         type=str,
-        default='default.png',
+        default=CURRENT_TIME + '.png',
         help='Output image filename',
     )
 
