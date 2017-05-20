@@ -1,70 +1,77 @@
-from algorithm import PackingAlgorithm
-from PIL import Image
-from geometry import Point, Rect, overlap
-from colours import colours
-import utility
 import json
+import os
+
+from PIL import Image
+
+from utility import split_filename
+from algorithm import PackingAlgorithm
+from geometry import Point, Rect, overlap
 
 class AlgorithmLargest(PackingAlgorithm):
-    def __init__(self, settings, file_manager):
-        super(AlgorithmLargest, self).__init__(settings, file_manager)
+    def __init__(self, args, file_manager):
+        super(AlgorithmLargest, self).__init__(args, file_manager)
 
-        # locations
-        self.loc = []
+        self._loc = []
 
-        self.width = self.settings.params['output_size'][0]
-        self.height = self.settings.params['output_size'][1]
-        self.padding = self.settings.params['padding']
-        self.step = self.settings.params['step']
+        self._width = args.width
+        self._height = args.height
+        self._padding = args.padding
+        self._step = args.step
 
-    def is_free(self, rect):
 
-        for r in self.loc:
+    def _pack(self):
+        for f in self._file_manager.files_sorted:
+            img = Image.open(os.path.join(self._args.input, f))
+            w, h = img.size
+            j = i = 0
+            added = False
+
+            while i < self._width:
+                if added:
+                    break
+
+                j = 0
+
+                while j < self._height:
+                    if added:
+                        break
+
+                    p1 = Point(i + self._padding, j + self._padding)
+                    p2 = Point(i + w + self._padding, j + h + self._padding)
+                    r1 = Rect(p1, p2)
+
+                    if (self._is_free(r1) and p2.x < self._width
+                        and p2.y < self._height):
+                        self._loc.append(r1)
+                        self._output.paste(img, (p1.x, p1.y), None)
+
+                        filename, ext = split_filename(f)
+                        info = self._file_manager.info.get(f, {})
+
+                        data = {
+                            'x' : p1.x,
+                            'y': p1.y,
+                            'w': w,
+                            'h': h,
+                            'name': filename,
+                            'ext': ext,
+                            'params': info.params,
+                        }
+
+                        self._record[filename] = data
+
+                        added = True
+
+                    j += self._step
+
+                i += self._step
+
+            self._check_for_errors(f, i, j)
+
+
+    def _is_free(self, rect):
+        for r in self._loc:
             if overlap(r, rect):
                 return False
 
         return True
-
-    def pack(self):
-
-        # errors = False
-        for f in self.file_manager.files_sorted:
-            img = Image.open(self.settings.params['input'] + f)
-            s = img.size
-            j = i = 0
-            added = False
-
-            while i < self.width:
-                if added: break
-
-                j = 0
-
-                while j < self.height:
-                    if added: break
-
-                    p1 = Point(i + self.padding, j + self.padding)
-                    p2 = Point(i + s[0] + self.padding, j + s[1] + self.padding)
-                    r1 = Rect(p1, p2)
-
-                    if self.is_free(r1) and p2.x < self.width and p2.y < self.height:
-                        self.loc.append(r1)
-                        self.output.paste(img, (p1.x, p1.y), None)
-
-                        filename, ext = utility.split_filename(f)
-                        info = self.file_manager.info.get(f, {})
-
-                        data = {'x' : p1.x, 'y': p1.y, 'w': s[0], 'h': s[1],
-                                    'name': filename,
-                                    'ext': ext,
-                                    'params': info.params}
-                        self.record[filename] = data
-                        added = True
-
-                    j += self.step
-
-                i += self.step
-
-            self.check_for_errors(f, i, j)
-
-
-
