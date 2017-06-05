@@ -4,29 +4,44 @@ import operator
 
 from PIL import Image
 
+from utility import Logger
 
-def save_output(filename, record, internal_path):
-    '''Saves record file to a file as a json'''
+logger = Logger(__name__)
+
+
+def save_output(args, record):
     to_save = json.dumps(record)
+
+    filename = args.output
 
     f = open(filename + '.txt', 'w')
     f.write(to_save)
     f.close()
 
-    # css output
+    if args.css:
+        logger.info('Writing CSS file for "%s"' % filename)
+
+        _write_css(filename, record)
+    else:
+        logger.info('No CSS file for "%s"' % filename)
+
+
+def _write_css(filename, record):
+    fmt = ('.{selector} {{width: {w}px; height: {h}px;'
+           'background: url({filename}) {y1}px {y2}px;}}')
+
     with open(filename + '.css', 'w') as f:
-        for file, data in sorted(record.items()):
-            css = '''.{file} {{width: {w}px; height: {h}px; background: url({filename}) {y1}px {y2}px;}}'''.format(
-                file=file,
-                filename=internal_path + filename,
-                # l=data['x'],
-                # w=data['w'],
-                w=data['w'],
-                h=data['h'],
-                y1=-data['x'],
-                y2=-data['y'],
-            )
-            f.write('{line}\n'.format(line=css))
+        for selector, data in sorted(record.items()):
+            f.write('{line}\n'.format(
+                line=fmt.format(
+                    selector=selector,
+                    filename=filename,
+                    w=data['w'],
+                    h=data['h'],
+                    y1=-data['x'],
+                    y2=-data['y'],
+                )
+            ))
 
 
 class InfoFile(object):

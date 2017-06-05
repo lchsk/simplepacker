@@ -53,10 +53,8 @@ class PackingAlgorithm(object):
         self._output.save(self._args.output)
         self._print_output()
         files.save_output(
-            self._args.output,
-            self._record,
-            './'
-            # self.settings.params['internal_path']
+            args=self._args,
+            record=self._record,
         )
 
         logger.info('Output is available in "{}"'.format(self._args.output),

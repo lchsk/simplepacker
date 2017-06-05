@@ -53,6 +53,12 @@ def read_args():
         help='Padding',
     )
 
+    parser.add_argument(
+        '--css',
+        action='store_true',
+        help='If set, CSS file will be generated',
+    )
+
     args = parser.parse_args()
 
     log_args = ', '.join(
