@@ -124,10 +124,10 @@ class FileManager(object):
             try:
                 img = Image.open(image_path)
             except FileNotFoundError:
-                print('Not found')
+                logger.warning('File "%s" not found' % image_path)
                 continue
-            except OSError:
-                print("e")
+            except OSError as e:
+                logger.warning('%s' % e)
                 continue
 
             self._info[f] = InfoFile(image_path + '.txt')
