@@ -46,7 +46,7 @@ class PackingAlgorithm(object):
         if i >= self._args.width or j >= self._args.height:
             self._errors = True
 
-            logger.error('File "{f}" did not fit')
+            logger.error('File "%s" did not fit', f)
 
 
     def _close(self):

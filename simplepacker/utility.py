@@ -44,16 +44,16 @@ class Logger(object):
         self._logger = logging.getLogger(name)
 
 
-    def info(self, message, color=None):
-        self._logger.info(self._get_message(message, color))
+    def info(self, message, color=None, *args):
+        self._logger.info(self._get_message(message, color), *args)
 
 
-    def warning(self, message):
-        self._logger.warning(self._get_message(message, Color.WARNING))
+    def warning(self, message, *args):
+        self._logger.warning(self._get_message(message, Color.WARNING), *args)
 
 
-    def error(self, message):
-        self._logger.error(self._get_message(message, Color.FAIL))
+    def error(self, message, *args):
+        self._logger.error(self._get_message(message, Color.FAIL), *args)
 
 
     @staticmethod
