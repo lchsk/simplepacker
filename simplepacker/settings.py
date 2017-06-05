@@ -1,6 +1,6 @@
 import argparse
 
-from simplepacker.utility import Logger, CURRENT_TIME
+from utility import Logger, CURRENT_TIME
 
 logger = Logger(__name__)
 
