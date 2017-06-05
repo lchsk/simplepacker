@@ -59,6 +59,12 @@ def read_args():
         help='If set, CSS file will be generated',
     )
 
+    parser.add_argument(
+        '--json',
+        action='store_true',
+        help='If set, JSON file will be generated',
+    )
+
     args = parser.parse_args()
 
     log_args = ', '.join(

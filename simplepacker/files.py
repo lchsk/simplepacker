@@ -10,13 +10,14 @@ logger = Logger(__name__)
 
 
 def save_output(args, record):
-    to_save = json.dumps(record)
-
     filename = args.output
 
-    f = open(filename + '.txt', 'w')
-    f.write(to_save)
-    f.close()
+    if args.json:
+        logger.info('Writing JSON file for "%s"' % filename)
+
+        _write_json(filename, record)
+    else:
+        logger.info('No JSON file for "%s"' % filename)
 
     if args.css:
         logger.info('Writing CSS file for "%s"' % filename)
@@ -24,6 +25,10 @@ def save_output(args, record):
         _write_css(filename, record)
     else:
         logger.info('No CSS file for "%s"' % filename)
+
+def _write_json(filename, record):
+    with open(filename + '.json', 'w') as f:
+        f.write(json.dumps(record))
 
 
 def _write_css(filename, record):
