@@ -46,11 +46,11 @@ def read_args():
     )
 
     parser.add_argument(
-        '-p',
-        '--padding',
+        '-m',
+        '--margin',
         type=int,
-        default=5,
-        help='Padding',
+        default=0,
+        help='Margin',
     )
 
     parser.add_argument(

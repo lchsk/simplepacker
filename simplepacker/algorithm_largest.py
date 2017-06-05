@@ -15,7 +15,7 @@ class AlgorithmLargest(PackingAlgorithm):
 
         self._width = args.width
         self._height = args.height
-        self._padding = args.padding
+        self._margin = args.margin
         self._step = args.step
 
 
@@ -36,8 +36,8 @@ class AlgorithmLargest(PackingAlgorithm):
                     if added:
                         break
 
-                    p1 = Point(i + self._padding, j + self._padding)
-                    p2 = Point(i + w + self._padding, j + h + self._padding)
+                    p1 = Point(i + self._margin, j + self._margin)
+                    p2 = Point(i + w + self._margin, j + h + self._margin)
                     r1 = Rect(p1, p2)
 
                     if (self._is_free(r1) and p2.x < self._width
