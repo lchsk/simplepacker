@@ -1,7 +1,7 @@
 from PIL import Image
 
-import files
-from utility import Logger, Color
+from . import files
+from .utility import Logger, Color
 
 logger = Logger(__name__)
 

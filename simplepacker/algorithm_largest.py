@@ -3,9 +3,9 @@ import os
 
 from PIL import Image
 
-from utility import split_filename
-from algorithm import PackingAlgorithm
-from geometry import Point, Rect, overlap
+from .utility import split_filename
+from .algorithm import PackingAlgorithm
+from .geometry import Point, Rect, overlap
 
 class AlgorithmLargest(PackingAlgorithm):
     def __init__(self, args, file_manager):

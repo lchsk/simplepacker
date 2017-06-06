@@ -4,7 +4,7 @@ import operator
 
 from PIL import Image
 
-from utility import Logger
+from .utility import Logger
 
 logger = Logger(__name__)
 
