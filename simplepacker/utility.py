@@ -10,7 +10,7 @@ CURRENT_TIME = ('{d.year}_{d.month}_{d.day}_'
 
 log_filename = CURRENT_TIME + '.log'
 
-log_format = '%(levelname)7s  %(name)25s  %(message)s'
+log_format = '%(levelname)7s  %(name)30s  %(message)s'
 formatter = logging.Formatter(log_format)
 
 root = logging.getLogger()

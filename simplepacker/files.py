@@ -49,26 +49,34 @@ def _write_css(filename, record):
             ))
 
 
-class InfoFile(object):
+class ParamsFile(object):
     def __init__(self, path):
 
-        self.params = {}
+        self._params = {}
 
-        if os.path.isfile(path):
-            self._f = open(path, 'r')
+        params_path = path + '.params'
+
+        if os.path.exists(params_path) and os.path.isfile(params_path):
+            logger.info('Loading .params file for "%s"' % path)
+
+            self._f = open(params_path, 'r')
             self._read()
             self._f.close()
+        else:
+            logger.warning('.params file for "%s" not found' % path)
+
+
+    @property
+    def params(self):
+        return self._params
+
 
     def _read(self):
+        for line in self._f:
+            if line and not line.startswith('#'):
+                key, value = line.split('=')
+                self._params[key] = value
 
-        try:
-            for line in self._f:
-                if line and not line.startswith('#'):
-                    key, value = line.split('=')
-                    self.params[key] = value
-        except:
-            # no need to output this to the user
-            pass
 
 
 class FileManager(object):
@@ -76,14 +84,19 @@ class FileManager(object):
         self._args = args
         self._input = args.input
 
+        if self._args.use_params:
+            logger.info('.params files will be used')
+        else:
+            logger.info('.params files will no be used')
+
         # just a list of filename
         self._files = []
 
         # dictionary: name => size
         self._file_sizes = {}
 
-        # name => InfoFile
-        self._info = {}
+        # name => ParamsFile
+        self._params = {}
 
         # list of filenames sorted (desc)
         self._files_sorted = []
@@ -97,8 +110,8 @@ class FileManager(object):
 
 
     @property
-    def info(self):
-        return self._info
+    def params(self):
+        return self._params
 
 
     def synchronise_info_files(self):
@@ -130,13 +143,18 @@ class FileManager(object):
                 logger.warning('%s' % e)
                 continue
 
-            self._info[f] = InfoFile(image_path + '.txt')
+            if self._args:
+                self._load_params_file(f, image_path)
 
             width, height = img.size
             area = width * height
 
             self._file_sizes[f] = (area, width, height)
             self._sort_by_area()
+
+
+    def _load_params_file(self, f, image_path):
+        self._params[f] = ParamsFile(image_path)
 
 
     def _sort_by_area(self):

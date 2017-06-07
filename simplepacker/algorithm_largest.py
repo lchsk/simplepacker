@@ -1,4 +1,3 @@
-import json
 import os
 
 from PIL import Image
@@ -6,6 +5,7 @@ from PIL import Image
 from .utility import split_filename
 from .algorithm import PackingAlgorithm
 from .geometry import Point, Rect, overlap
+
 
 class AlgorithmLargest(PackingAlgorithm):
     def __init__(self, args, file_manager):
@@ -46,17 +46,20 @@ class AlgorithmLargest(PackingAlgorithm):
                         self._output.paste(img, (p1.x, p1.y), None)
 
                         filename, ext = split_filename(f)
-                        info = self._file_manager.info.get(f, {})
 
                         data = {
-                            'x' : p1.x,
+                            'x': p1.x,
                             'y': p1.y,
                             'w': w,
                             'h': h,
                             'name': filename,
                             'ext': ext,
-                            'params': info.params,
                         }
+
+                        if self._args.use_params:
+                            data.update(
+                                params=self._file_manager.params.get(f).params,
+                            )
 
                         self._record[filename] = data
 
