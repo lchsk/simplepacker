@@ -66,12 +66,3 @@ class Logger(object):
 
 def split_filename(filename):
     return os.path.splitext(filename)
-
-
-def is_image(path):
-    try:
-        Image.open(path)
-    except OSError:
-        return False
-    else:
-        return True

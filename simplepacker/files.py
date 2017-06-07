@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import operator
 
@@ -114,24 +115,26 @@ class FileManager(object):
         return self._params
 
 
-    def synchronise_info_files(self):
-        '''Creates text files in input folder. The name of each file is the same as 
-        that of the image file, but with a txt extension. If file already exists
-        it is left untouched.'''
-        
-        # if self.settings.params['synchronise']:
-            # files = os.listdir(self._input)
+    def _create_params_files(self, path):
+        """Create .params files for input images.
 
-            # for f in files:
-                # if utility.is_image(self.input + f):
-                    # h = open(self.input + f + '.json', 'a')
-                    # h.close()
+        The name of each file is the same as that of the image file, but with
+        a .params extension. If file already exists it is left untouched."""
+
+        params_path = path + '.params'
+
+        if not os.path.exists(params_path):
+            with open(params_path, 'w'):
+                pass
 
 
     def _read_input(self):
         self._files = os.listdir(self._input)
         
         for f in self._files:
+            if f.endswith('.params'):
+                continue
+
             image_path = os.path.join(self._input, f)
 
             try:
@@ -143,7 +146,10 @@ class FileManager(object):
                 logger.warning('%s' % e)
                 continue
 
-            if self._args:
+            if self._args.create_params_files:
+                self._create_params_files(image_path)
+
+            if self._args.use_params:
                 self._load_params_file(f, image_path)
 
             width, height = img.size
@@ -152,6 +158,9 @@ class FileManager(object):
             self._file_sizes[f] = (area, width, height)
             self._sort_by_area()
 
+        if self._args.create_params_files:
+            logger.info('.params files were created, quitting')
+            sys.exit(0)
 
     def _load_params_file(self, f, image_path):
         self._params[f] = ParamsFile(image_path)

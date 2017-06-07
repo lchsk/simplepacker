@@ -71,6 +71,12 @@ def read_args():
         help='If set, .params files will be used',
     )
 
+    parser.add_argument(
+        '--create-params-files',
+        action='store_true',
+        help='If set, .params files will be created and the application will quit',
+    )
+
     args = parser.parse_args()
 
     log_args = ', '.join(

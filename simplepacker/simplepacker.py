@@ -6,7 +6,6 @@ if __name__ == '__main__':
     args = read_args()
 
     fm = FileManager(args)
-    fm.synchronise_info_files()
 
     a = AlgorithmLargest(args, fm)
     a.run()
