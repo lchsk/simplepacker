@@ -7,6 +7,12 @@ from PIL import Image
 
 from .utility import Logger
 
+try:
+    FileNotFoundError
+except NameError:
+    # Python2
+    FileNotFoundError = IOError
+
 logger = Logger(__name__)
 
 
