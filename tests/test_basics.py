@@ -17,10 +17,15 @@ from simplepacker.files import FileManager
 class TestSettingsBase(unittest.TestCase):
 
     def setUp(self):
+        self._listdir = os.listdir
+
         os.listdir = MagicMock()
         sys.argv = ['simplepacker', '-i', 'inputdir/']
 
         self._args = read_args()
+
+    def tearDown(self):
+        os.listdir = self._listdir
 
 
 class TestAlgorithm(TestSettingsBase):
