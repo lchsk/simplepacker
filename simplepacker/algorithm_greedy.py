@@ -7,9 +7,9 @@ from .algorithm import PackingAlgorithm
 from .geometry import Point, Rect, overlap
 
 
-class AlgorithmLargest(PackingAlgorithm):
+class AlgorithmGreedy(PackingAlgorithm):
     def __init__(self, args, file_manager):
-        super(AlgorithmLargest, self).__init__(args, file_manager)
+        super(AlgorithmGreedy, self).__init__(args, file_manager)
 
         self._loc = []
 
