@@ -20,18 +20,18 @@ def save_output(args, record):
     filename = args.output
 
     if args.json:
-        logger.info('Writing JSON file for "%s"' % filename)
+        logger.info('JSON output will be generated')
 
         _write_json(filename, record)
     else:
-        logger.info('No JSON file for "%s"' % filename)
+        logger.info('JSON output will not be generated')
 
     if args.css:
-        logger.info('Writing CSS file for "%s"' % filename)
+        logger.info('CSS output will be generated')
 
         _write_css(filename, record)
     else:
-        logger.info('No CSS file for "%s"' % filename)
+        logger.info('CSS output will not generated')
 
 def _write_json(filename, record):
     with open(filename + '.json', 'w') as f:

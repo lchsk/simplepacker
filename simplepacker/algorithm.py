@@ -84,6 +84,8 @@ class PackingAlgorithm(object):
 
 
     def _close(self):
+        output_files = []
+
         for i, output in enumerate(self._output, 1):
             logger.info('Saving output %d/%d' % (i, len(self._output)))
 
@@ -91,11 +93,15 @@ class PackingAlgorithm(object):
             filename = path[:-1]
             ext = path[-1]
 
-            output.save('{path}.{num}{ext}'.format(
+            output_file = '{path}.{num}{ext}'.format(
                 path=''.join(filename),
                 num=i,
                 ext=ext,
-            ))
+            )
+
+            output_files.append(output_file)
+
+            output.save(output_file)
 
         self._print_output()
 
@@ -104,5 +110,7 @@ class PackingAlgorithm(object):
             record=self._record,
         )
 
-        logger.info('Output is available in "{}"'.format(self._args.output),
-                    Color.OKGREEN)
+        logger.info(
+            'Output file(s): {}'.format(', '.join(output_files)),
+            Color.OKGREEN,
+        )
