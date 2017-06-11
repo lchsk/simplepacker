@@ -40,14 +40,14 @@ def _write_json(filename, record):
 
 def _write_css(filename, record):
     fmt = ('.{selector} {{width: {w}px; height: {h}px;'
-           'background: url({filename}) {y1}px {y2}px;}}')
+           'background: url({image}) {y1}px {y2}px;}}')
 
     with open(filename + '.css', 'w') as f:
         for selector, data in sorted(record.items()):
             f.write('{line}\n'.format(
                 line=fmt.format(
                     selector=selector,
-                    filename=filename,
+                    image=data['image'],
                     w=data['w'],
                     h=data['h'],
                     y1=-data['x'],

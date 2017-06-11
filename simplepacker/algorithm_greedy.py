@@ -74,6 +74,7 @@ class AlgorithmGreedy(PackingAlgorithm):
                                 'h': h,
                                 'name': filename,
                                 'ext': ext,
+                                'image': self._get_output_name(loc_i + 1),
                             }
 
                             if self._args.use_params:
