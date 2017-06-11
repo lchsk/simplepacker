@@ -173,7 +173,7 @@ class FileManager(object):
 
 
     def _sort_by_area(self):
-        self._files_sorted = (
+        self._files_sorted = list(
             name
             for name, _ in sorted(
                 self._file_sizes.items(), key=operator.itemgetter(1),
