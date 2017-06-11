@@ -36,13 +36,17 @@ class TestAlgorithm(TestSettingsBase):
         self._algo = PackingAlgorithm(self._args, self._fm)
 
     def test_prepare(self):
-        self.assertIsNone(self._algo._output)
+        self.assertEqual(self._algo._output, [])
+        self.assertEqual(self._algo._output_i, -1)
 
-        self._algo._prepare()
+        self._algo._add_new_output()
 
-        self.assertIsInstance(self._algo._output, Image)
+        self.assertEqual(self._algo._output_i, 0)
+        self.assertEqual(len(self._algo._output), 1)
 
-        width, height = self._algo._output.size
+        self.assertIsInstance(self._algo._output[0], Image)
+
+        width, height = self._algo._output[0].size
 
         self.assertEqual(width, self._args.width)
         self.assertEqual(height, self._args.height)
