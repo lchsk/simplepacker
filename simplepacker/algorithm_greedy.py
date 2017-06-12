@@ -32,7 +32,10 @@ class AlgorithmGreedy(PackingAlgorithm):
 
             w, h = img.size
 
-            if w > self._width or h > self._height:
+            if (
+                w + self._args.margin > self._width
+                or h + self._args.margin > self._height
+            ):
                 logger.error(
                     'File "%s" is too large to fit into the output, '
                     'it will be skipped' % f
