@@ -77,6 +77,12 @@ def read_args():
         help='If set, .params files will be created and the application will quit',
     )
 
+    parser.add_argument(
+        '--dont-resize-output',
+        action='store_true',
+        help='If set, output images will not be resized to match the content',
+    )
+
     args = parser.parse_args()
 
     log_args = ', '.join(

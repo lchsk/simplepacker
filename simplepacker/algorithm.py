@@ -83,6 +83,25 @@ class PackingAlgorithm(object):
         return False
 
 
+    def _resize_output(self, output, output_index):
+        x, y, w, h = 0, 0, 0, 0
+
+        for rect in self._locs[output_index - 1]:
+            if rect.left < x:
+                x = rect.left
+
+            if rect.bottom < y:
+                y = rect.bottom
+
+            if rect.right > w:
+                w = rect.right
+
+            if rect.top > h:
+                h = rect.top
+
+        return output.crop((x, y, w, h))
+
+
     def _close(self):
         output_files = []
 
@@ -92,6 +111,9 @@ class PackingAlgorithm(object):
             output_file = self._get_output_name(i)
 
             output_files.append(output_file)
+
+            if not self._args.dont_resize_output:
+                output = self._resize_output(output, i)
 
             output.save(output_file)
 
