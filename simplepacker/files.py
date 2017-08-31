@@ -59,7 +59,7 @@ def _write_css(filename, record):
 class ParamsFile(object):
     def __init__(self, path):
 
-        self._params = {}
+        self._params = None
 
         params_path = path + '.params'
 
@@ -79,11 +79,19 @@ class ParamsFile(object):
 
 
     def _read(self):
-        for line in self._f:
-            if line and not line.startswith('#'):
-                key, value = line.split('=')
-                self._params[key] = value
+        content = self._f.read()
 
+        if not content.strip():
+            logger.warning('Params file "%s" is empty, it will be omitted',
+                           self._f.name)
+
+            return
+
+        try:
+            self._params = json.loads(content)
+        except json.decoder.JSONDecodeError:
+            logger.warning('Params file "%s" is not a valid JSON, it will be omitted',
+                           self._f.name)
 
 
 class FileManager(object):
