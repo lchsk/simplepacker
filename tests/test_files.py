@@ -25,4 +25,4 @@ class TestTestData(unittest.TestCase):
         self._fm = FileManager(self._args)
 
     def test_loading_files(self):
-        self.assertEqual(list(self._fm._files_sorted), ['cat1.jpg', 'cat2.jpg'])
+        self.assertEqual(list(self._fm._files_sorted), ['cat2.jpg', 'cat1.jpg'])
