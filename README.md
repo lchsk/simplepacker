@@ -1,1 +1,2 @@
 [![codecov](https://codecov.io/gh/lchsk/simplepacker/branch/master/graph/badge.svg)](https://codecov.io/gh/lchsk/simplepacker)
+[![Build Status](https://travis-ci.org/lchsk/simplepacker.svg?branch=master)](https://travis-ci.org/lchsk/simplepacker)
