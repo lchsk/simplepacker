@@ -7,4 +7,4 @@ clean:
 	rm -f *.log
 
 clean-all: clean
-	rm -f *.jpg *.png
+	rm -f *.jpg *.png *.json *.css
