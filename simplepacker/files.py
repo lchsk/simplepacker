@@ -104,9 +104,6 @@ class FileManager(object):
         else:
             logger.info('.params files will no be used')
 
-        # just a list of filename
-        self._files = []
-
         # dictionary: name => size
         self._file_sizes = {}
 
@@ -143,9 +140,9 @@ class FileManager(object):
 
 
     def _read_input(self):
-        self._files = os.listdir(self._input)
+        files = os.listdir(self._input)
         
-        for f in self._files:
+        for f in files:
             if f.endswith('.params'):
                 continue
 
