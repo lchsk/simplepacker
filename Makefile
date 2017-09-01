@@ -1,6 +1,6 @@
 .PHONY: check clean
 
-check:
+check: clean-all
 	python -m nose --with-coverage -s --cover-package simplepacker
 
 clean:
