@@ -1,3 +1,5 @@
+import os
+
 from PIL import Image
 
 from . import files
@@ -67,7 +69,11 @@ class PackingAlgorithm(object):
 
 
     def _print_output(self):
-        logger.info('Packing completed successfully!', Color.OKGREEN)
+        if logger.errors_cnt:
+            logger.info('Packing completed with {} error(s)'.format(
+                logger.errors_cnt), Color.FAIL)
+        else:
+            logger.info('Packing completed successfully!', Color.OKGREEN)
 
 
     def _check_for_errors(self, f, i, j):
@@ -106,9 +112,13 @@ class PackingAlgorithm(object):
         output_files = []
 
         for i, output in enumerate(self._output, 1):
-            logger.info('Saving output %d/%d' % (i, len(self._output)))
-
             output_file = self._get_output_name(i)
+
+            if os.path.exists(output_file):
+                logger.error('File "%s" already exists, will not be saved',
+                             output_file)
+
+                continue
 
             output_files.append(output_file)
 
@@ -116,6 +126,10 @@ class PackingAlgorithm(object):
                 output = self._resize_output(output, i)
 
             output.save(output_file)
+
+            logger.info('Saved output %d/%d "%s"' % (i,
+                                                     len(self._output),
+                                                     output_file))
 
         self._print_output()
 

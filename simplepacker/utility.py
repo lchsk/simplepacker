@@ -42,6 +42,13 @@ class Logger(object):
     def __init__(self, name):
         self._logger = logging.getLogger(name)
 
+        self._errors_cnt = 0
+
+
+    @property
+    def errors_cnt(self):
+        return self._errors_cnt
+
 
     def info(self, message, color=None, *args):
         self._logger.info(self._get_message(message, color), *args)
@@ -53,6 +60,8 @@ class Logger(object):
 
     def error(self, message, *args):
         self._logger.error(self._get_message(message, Color.FAIL), *args)
+
+        self._errors_cnt += 1
 
 
     @staticmethod
