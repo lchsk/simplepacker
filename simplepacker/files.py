@@ -170,7 +170,11 @@ class FileManager(object):
             area = width * height
 
             self._file_sizes[f] = (area, width, height)
-            self._sort_by_area()
+
+            if self._args.sort_alphabetically:
+                self._sort_alphabetically()
+            else:
+                self._sort_by_area()
 
         if self._args.create_params_files:
             logger.info('.params files were created, quitting')
@@ -187,3 +191,7 @@ class FileManager(object):
                 self._file_sizes.items(), key=operator.itemgetter(1),
                 reverse=True,
             ))
+
+
+    def _sort_alphabetically(self):
+        self._files_sorted = sorted(self._file_sizes.keys())

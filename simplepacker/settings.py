@@ -83,6 +83,12 @@ def read_args():
         help='If set, output images will not be resized to match the content',
     )
 
+    parser.add_argument(
+        '--sort-alphabetically',
+        action='store_true',
+        help='If set, input images will be sorted by name',
+    )
+
     args = parser.parse_args()
 
     log_args = ', '.join(
