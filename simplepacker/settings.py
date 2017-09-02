@@ -40,11 +40,11 @@ def read_args():
     )
 
     parser.add_argument(
-        '-s',
-        '--step',
+        '-p',
+        '--padding',
         type=int,
-        default=20,
-        help='Step size',
+        default=0,
+        help='padding',
     )
 
     parser.add_argument(

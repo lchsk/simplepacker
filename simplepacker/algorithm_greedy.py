@@ -19,7 +19,9 @@ class AlgorithmGreedy(PackingAlgorithm):
         self._width = args.width
         self._height = args.height
         self._margin = args.margin
-        self._step = args.step
+
+        self._padding = args.padding if args.padding > 0 else 0
+        self._step = self._padding or 1
 
 
     def _pack(self):
@@ -59,12 +61,36 @@ class AlgorithmGreedy(PackingAlgorithm):
                         if added:
                             break
 
-                        p1 = Point(i + self._margin, j + self._margin)
-                        p2 = Point(i + w + self._margin, j + h + self._margin)
+                        x1 = i + self._margin
+                        y1 = j + self._margin
+                        x2 = i + w + self._margin
+                        y2 = j + h + self._margin
+
+                        p1 = Point(x1, y1)
+                        p2 = Point(x2, y2)
                         r1 = Rect(p1, p2)
 
-                        if (self._is_free(r1, loc) and p2.x < self._width
-                            and p2.y < self._height):
+                        cont = False
+
+                        for l in loc:
+                            if abs(r1.left - l.right) < self._padding:
+                                cont = True
+                                i += self._padding
+
+                                break
+
+                            if abs(r1.bottom - l.top) < self._padding:
+                                cont = True
+                                j += self._padding
+
+                                break
+
+                        if cont:
+                            continue
+
+                        if (self._is_free(r1, loc)
+                            and p2.x <= self._width
+                            and p2.y <= self._height):
                             loc.append(r1)
                             self._get_output(loc_i).paste(img, (p1.x, p1.y), None)
 

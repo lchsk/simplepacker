@@ -56,7 +56,11 @@ class PackingAlgorithm(object):
 
 
     def _check_for_errors(self, f, i, j):
-        if i >= self._args.width or j >= self._args.height:
+        if i == self._args.width or j == self._args.height:
+            self._add_new_output()
+
+            return True
+        elif i > self._args.width or j > self._args.height:
             logger.warning('File "%s" did not fit, creating a new image' % f)
 
             self._add_new_output()

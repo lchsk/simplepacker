@@ -21,9 +21,9 @@ class Rect(object):
 def overlap(r1, r2):
     overlap_h = True
     overlap_v = True
-    if (r1.left > r2.right) or (r1.right < r2.left):
+    if (r1.left >= r2.right) or (r1.right <= r2.left):
         overlap_h = False
-    if (r1.top < r2.bottom) or (r1.bottom > r2.top):
+    if (r1.top <= r2.bottom) or (r1.bottom >= r2.top):
         overlap_v = False
     return overlap_h and overlap_v
 
