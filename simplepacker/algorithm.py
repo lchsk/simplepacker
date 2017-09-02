@@ -32,24 +32,6 @@ class PackingAlgorithm(object):
         raise NotImplementedError()
 
 
-    def _get_current_loc(self):
-        assert self._output_i >= 0 and self._output_i < len(self._output)
-
-        return self._locs[self._output_i]
-
-
-    def _get_loc(self, i):
-        assert i >= 0 and i < len(self._output)
-
-        return self._locs[i]
-
-
-    def _get_current_output(self):
-        assert self._output_i >= 0 and self._output_i < len(self._output)
-
-        return self._output[self._output_i]
-
-
     def _get_output(self, i):
         assert i >= 0 and i < len(self._output)
 
