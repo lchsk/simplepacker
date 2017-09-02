@@ -3,14 +3,14 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'simplepacker',
-    version = '0.1',
+    version = '0.2',
     description = 'Simplepacker packs many images into one or several files',
     license = 'GPL',
     packages = find_packages(),
     author = 'Maciej Lechowski',
     author_email = 'mjlechowski@gmail.com',
     url = 'https://github.com/lchsk/simplepacker',
-    download_url = 'https://github.com/lchsk/simplepacker/archive/v0.1.tar.gz',
+    download_url = 'https://github.com/lchsk/simplepacker/archive/v0.2.tar.gz',
     keywords = [
         'images', 'graphics', 'packing', 'packer', 'texture', 'textures', 'games'
     ],
