@@ -68,14 +68,6 @@ class PackingAlgorithm(object):
         ))
 
 
-    def _print_output(self):
-        if logger.errors_cnt:
-            logger.info('Packing completed with {} error(s)'.format(
-                logger.errors_cnt), Color.FAIL)
-        else:
-            logger.info('Packing completed successfully!', Color.OKGREEN)
-
-
     def _check_for_errors(self, f, i, j):
         if i >= self._args.width or j >= self._args.height:
             logger.warning('File "%s" did not fit, creating a new image' % f)
@@ -125,23 +117,22 @@ class PackingAlgorithm(object):
             if not self._args.dont_resize_output:
                 output = self._resize_output(output, i)
 
+            if 0 in output.size:
+                logger.error('Output "%s" is empty, will not be saved', output_file)
+
+                continue
+
             output.save(output_file)
 
-            logger.info('Saved output %d/%d "%s"' % (i,
-                                                     len(self._output),
-                                                     output_file))
-
-        self._print_output()
+            logger.info('Output %d/%d "%s" saved'
+                        % (i, len(self._output), output_file),
+                        Color.OKGREEN)
 
         files.save_output(
             args=self._args,
             record=self._record,
         )
 
-        logger.info(
-            'Output file(s): {}'.format(', '.join(output_files)),
-            Color.OKGREEN,
-        )
 
     def _get_output_name(self, index):
         path = split_filename(self._args.output)

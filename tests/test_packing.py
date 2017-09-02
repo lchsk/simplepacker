@@ -65,3 +65,23 @@ class TestGreedyPacking(unittest.TestCase):
             'output.2.jpg': (100, 102),
             'output.1.jpg': (520, 599),
         })
+
+
+    def test_omit_large_files(self):
+        sys.argv = [
+            'simplepacker',
+            '-i', self.TEST_DATA,
+            '-o', 'output.jpg',
+            '--width', '50',
+            '--height', '50',
+        ]
+
+        args = read_args()
+        fm = FileManager(args)
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output()
+
+        self.assertEqual(output, {})
