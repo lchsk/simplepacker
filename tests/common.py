@@ -4,6 +4,12 @@ import subprocess
 from PIL import Image
 
 
+try:
+    subprocess_run = subprocess.run
+except AttributeError:
+    subprocess_run = subprocess.call
+
+
 def get_output(fmt='jpg'):
     output = glob.glob('*.' + fmt)
 
@@ -14,4 +20,4 @@ def get_output(fmt='jpg'):
 
 
 def clean_output():
-    subprocess.run(['make', 'clean-all'])
+    subprocess_run(['make', 'clean-all'])
