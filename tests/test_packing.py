@@ -169,4 +169,45 @@ class TestGreedyPacking(unittest.TestCase):
         self.assertIn('cat1', json_file)
         self.assertIn('cat2', json_file)
 
-        self.assertEqual(output, {'output.1.jpg': (520, 702)})
+        self.assertEqual(output, {'output.1.jpg': (520, 701)})
+
+
+    def test_exact_image_size_no_padding(self):
+        sys.argv = [
+            'simplepacker',
+            '-i', self.TEST_DATA,
+            '-o', 'output.png',
+            '--width', '100',
+            '--height', '102',
+        ]
+
+        args = read_args()
+        fm = FileManager(args)
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output('png')
+
+        self.assertEqual(output, {'output.1.png': (100, 102)})
+
+
+    def test_exact_image_size_with_padding(self):
+        sys.argv = [
+            'simplepacker',
+            '-i', self.TEST_DATA,
+            '-o', 'output.png',
+            '--width', '520',
+            '--height', '707',
+            '--padding', '5',
+        ]
+
+        args = read_args()
+        fm = FileManager(args)
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output('png')
+
+        self.assertEqual(output, {'output.1.png': (520, 707)})
