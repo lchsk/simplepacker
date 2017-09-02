@@ -1,3 +1,4 @@
+import json
 import sys
 import unittest
 
@@ -10,7 +11,7 @@ from simplepacker.settings import read_args
 from simplepacker.files import FileManager
 from simplepacker.algorithm_greedy import AlgorithmGreedy
 
-from .common import get_output, clean_output
+from .common import get_output, clean_output, get_files, group_files
 
 
 class TestGreedyPacking(unittest.TestCase):
@@ -50,6 +51,7 @@ class TestGreedyPacking(unittest.TestCase):
             '-o', 'output.jpg',
             '--width', '600',
             '--height', '600',
+            '--json',
         ]
 
         args = read_args()
@@ -65,6 +67,18 @@ class TestGreedyPacking(unittest.TestCase):
             'output.2.jpg': (100, 102),
             'output.1.jpg': (520, 599),
         })
+
+        files = get_files('css', 'json')
+
+        self.assertEqual(files, set(['output.jpg.json']))
+
+        grouped = group_files(files)
+
+        json_file = json.load(open(grouped['json']))
+
+        # cat2 is the larger one so it's in output.1
+        self.assertEqual(json_file['cat2']['image'], 'output.1.jpg')
+        self.assertEqual(json_file['cat1']['image'], 'output.2.jpg')
 
 
     def test_omit_large_files(self):
@@ -85,3 +99,37 @@ class TestGreedyPacking(unittest.TestCase):
         output = get_output()
 
         self.assertEqual(output, {})
+
+
+    def test_output_data(self):
+        sys.argv = [
+            'simplepacker',
+            '-i', self.TEST_DATA,
+            '-o', 'output.jpg',
+            '--json',
+            '--css',
+        ]
+
+        args = read_args()
+        fm = FileManager(args)
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output()
+
+        files = get_files('css', 'json')
+
+        self.assertEqual(files, set(['output.jpg.json', 'output.jpg.css']))
+
+        grouped = group_files(files)
+
+        json_file = json.load(open(grouped['json']))
+
+        for value in json_file.values():
+            self.assertEqual(value['image'], 'output.1.jpg')
+
+        self.assertIn('cat1', json_file)
+        self.assertIn('cat2', json_file)
+
+        self.assertEqual(output, {'output.1.jpg': (520, 702)})
