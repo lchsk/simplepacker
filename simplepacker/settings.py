@@ -5,7 +5,9 @@ from .utility import Logger, CURRENT_TIME
 logger = Logger(__name__)
 
 def read_args():
-    parser = argparse.ArgumentParser(description='simplepacker')
+    parser = argparse.ArgumentParser(
+        description='Simplepacker packs many images into one or several files',
+    )
 
     parser.add_argument(
         '-i',
