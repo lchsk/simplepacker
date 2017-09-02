@@ -101,6 +101,37 @@ class TestGreedyPacking(unittest.TestCase):
         self.assertEqual(output, {})
 
 
+    def test_dont_overwrite_output_files(self):
+        sys.argv = [
+            'simplepacker',
+            '-i', self.TEST_DATA,
+            '-o', 'output.jpg',
+        ]
+
+        args = read_args()
+        fm = FileManager(args)
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output()
+
+        self.assertEqual(len(output), 1)
+
+        with open(list(output)[0], 'rb') as f:
+            first_file = f.read()
+
+        a = AlgorithmGreedy(args, fm)
+        a.run()
+
+        output = get_output()
+
+        with open(list(output)[0], 'rb') as f:
+            second_file = f.read()
+
+        self.assertEqual(first_file, second_file)
+
+
     def test_output_data(self):
         sys.argv = [
             'simplepacker',
