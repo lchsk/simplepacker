@@ -108,6 +108,7 @@ class TestGreedyPacking(unittest.TestCase):
             '-o', 'output.jpg',
             '--json',
             '--css',
+            '--use-params',
         ]
 
         args = read_args()
@@ -125,6 +126,11 @@ class TestGreedyPacking(unittest.TestCase):
         grouped = group_files(files)
 
         json_file = json.load(open(grouped['json']))
+
+        # Check params
+        self.assertEqual(json_file['cat1']['params']['name'], 'cat-name')
+        self.assertEqual(json_file['cat1']['params']['likes'],
+                         ['cat-food', 'sleeping'])
 
         for value in json_file.values():
             self.assertEqual(value['image'], 'output.1.jpg')
