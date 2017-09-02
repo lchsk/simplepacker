@@ -43,8 +43,13 @@ class PackingAlgorithm(object):
 
         self._locs.append(list())
 
+        if self._args.output.endswith('png'):
+            color = 'RGBA'
+        else:
+            color = 'RGB'
+
         self._output.append(Image.new(
-            "RGBA",
+            color,
             (self._args.width, self._args.height),
             None,
         ))
