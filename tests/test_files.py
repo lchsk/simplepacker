@@ -47,3 +47,19 @@ class TestTestData(unittest.TestCase):
 
         # Clean up after this test
         os.remove(self.TEST_DATA + 'cat2.jpg.params')
+
+
+    def test_sort_files_alphabetically(self):
+        sys.argv = ['simplepacker', '-i', self.TEST_DATA]
+
+        fm = FileManager(read_args())
+
+        # Larger files first
+        self.assertEqual(fm._files_sorted, ['cat2.jpg', 'cat1.jpg'])
+
+        sys.argv = ['simplepacker', '-i', self.TEST_DATA, '--sort-alphabetically']
+
+        fm = FileManager(read_args())
+
+        # Alphabetically
+        self.assertEqual(fm._files_sorted, ['cat1.jpg', 'cat2.jpg'])
