@@ -27,7 +27,7 @@ setup(
         'Topic :: Multimedia :: Graphics',
     ],
     install_requires=[
-        'Pillow==4.1.1',
+        'Pillow==6.2.0',
     ],
     entry_points={
         'console_scripts': [
